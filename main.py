@@ -6,9 +6,14 @@ Dur = 1000 # Set Duration To 1000 ms == 1 second
 kivy.require('1.9.1')
 
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import Widget
+from kivy.uix.label import Label
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.button import Button
+from kivy.uix.textinput import TextInput
 
-class NapBoxLayout(BoxLayout):
+class NapBoxLayout(FloatLayout):
     def timah(self):
         tm.sleep(10)
         winsound.Beep(Freq, Dur)
