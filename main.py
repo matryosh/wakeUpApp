@@ -6,23 +6,28 @@ Dur = 1000 # Set Duration To 1000 ms == 1 second
 kivy.require('1.9.1')
 
 from kivy.app import App
-from kivy.uix.widget import Widget
-from kivy.uix.label import Label
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.button import Button
-from kivy.uix.textinput import TextInput
+from kivy.properties import NumericProperty
 
-class NapBoxLayout(FloatLayout):
-    def timah(self):
-        tm.sleep(10)
-        winsound.Beep(Freq, Dur)
-        print "Wake UP!"
+class NapFloatLayout(FloatLayout):
+
+    minute_label = "15:00"
+
+    def numberInput(self, sleepAmt):
+        pass
+
+    def napButton(self, sleepAmt):
+        sleep_minutes = float(sleepAmt)*60
+
+        if sleepAmt:
+            tm.sleep(float(sleepAmt))
+            winsound.Beep(Freq, Dur)
+            print "Wake UP!"
 
 class NapTimerApp(App):
 
     def build(self):
-        return NapBoxLayout()
+        return NapFloatLayout()
 
 napApp = NapTimerApp()
 napApp.run()

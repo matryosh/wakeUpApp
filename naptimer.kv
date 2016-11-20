@@ -1,20 +1,31 @@
 #:kivy 1.9.1
 
 <FloatLayout>:
+    canvas:
+        Color:
+            rgb: .4, .5, .5
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
     Label:
-        text: "15:00"
+        id: time
+        text: root.minute_label
         font_size: 80
         pos: 120, 125
         size_hint: .72, 1
 
     TextInput:
+        id: sleepAmt
         text: "15"
         pos: 120*3, 225
         font_size: 20
         multiline: False
+        focus: True
         size_hint: .1, .1
 
     Button:
-        text: "Nap Time!"
+        text: "Tap to Nap!"
         pos: 120*3, 100
         size_hint: .1, .1
+        on_press: root.napButton(sleepAmt.text)
