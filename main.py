@@ -11,12 +11,8 @@ from kivy.properties import NumericProperty
 
 class NapFloatLayout(FloatLayout):
 
-    minute_label = "15:00"
-
-    def numberInput(self, sleepAmt):
-        pass
-
     def napButton(self, sleepAmt):
+
         sleep_minutes = float(sleepAmt)*60
 
         if sleepAmt:
