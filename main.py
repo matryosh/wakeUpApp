@@ -8,10 +8,24 @@ class SetTimer(BoxLayout):
 
     nap_time = NumericProperty
 
-class NapTimerApp(App):
 
+class Countdown(BoxLayout):
+    pass
+
+class TimerRoot(BoxLayout):
+    startTimer = ObjectProperty()
+
+    def startTimer(self):
+        self.clear_widgets()
+        self.add_widget(Countdown())
+
+    def setTimer(self):
+        self.clear_widgets()
+        self.add_widget(SetTimer())
+
+class NapTimerApp(App):
     def build(self):
-        return SetTimer()
+        return TimerRoot()
 
 napApp = NapTimerApp()
 

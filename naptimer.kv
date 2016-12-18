@@ -1,6 +1,10 @@
 #:kivy 1.9.1
 
-SetTimer:
+TimerRoot:
+
+
+<TimerRoot>:
+    SetTimer
 
 <SetTimer>:
     orientation: "vertical"
@@ -27,4 +31,19 @@ SetTimer:
             width: "400dp"
             size_hint: None, None
             text: "Time For A Nap"
-            on_press: root.startTimer()
+            on_press: app.root.startTimer()
+
+<Countdown>:
+    orientation: "vertical"
+    BoxLayout:
+        Label:
+            text: "15:00"
+            font_size: "150sp"
+    AnchorLayout:
+        anchor_x: "center"
+        anchor_y: "bottom"
+        Button:
+            width: "300dp"
+            size_hint: None, None
+            text: "Cancel"
+            on_press: app.root.setTimer()
