@@ -1,29 +1,19 @@
 import kivy
-import time as tm
-import winsound
-Freq = 2500 # Set Frequency To 2500 Hertz
-Dur = 1000 # Set Duration To 1000 ms == 1 second
 kivy.require('1.9.1')
-
 from kivy.app import App
-from kivy.uix.floatlayout import FloatLayout
-from kivy.properties import NumericProperty
+from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import NumericProperty, ObjectProperty
 
-class NapFloatLayout(FloatLayout):
+class SetTimer(BoxLayout):
 
-    def napButton(self, sleepAmt):
-
-        sleep_minutes = float(sleepAmt)*60
-
-        if sleepAmt:
-            tm.sleep(float(sleepAmt))
-            winsound.Beep(Freq, Dur)
-            print "Wake UP!"
+    nap_time = NumericProperty
 
 class NapTimerApp(App):
 
     def build(self):
-        return NapFloatLayout()
+        return SetTimer()
 
 napApp = NapTimerApp()
-napApp.run()
+
+if __name__ == "__main__":
+    napApp.run()
