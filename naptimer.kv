@@ -14,7 +14,6 @@ TimerRoot:
         Label:
             font_size: "140sp"
             text: "15:00"
-
     AnchorLayout:
         TextInput:
             size_hint: None, None
@@ -31,6 +30,8 @@ TimerRoot:
             width: "400dp"
             size_hint: None, None
             text: "Time For A Nap"
+            background_normal: ""
+            background_color: [0.24, 0.62, 1, 1]
             on_press: app.root.startTimer()
 
 <Countdown>:
@@ -46,4 +47,6 @@ TimerRoot:
             width: "300dp"
             size_hint: None, None
             text: "Cancel"
+            background_normal: ""
+            background_color: [0.24, 0.62, 1, 1]
             on_press: app.root.setTimer()
