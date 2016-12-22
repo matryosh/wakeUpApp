@@ -10,7 +10,11 @@ class SetTimer(BoxLayout):
 
 
 class Countdown(BoxLayout):
-    pass
+
+    nap_timer = NumericProperty
+
+    def startTime(self):
+        print self.nap_timer.text
 
 class TimerRoot(BoxLayout):
     startTimer = ObjectProperty()

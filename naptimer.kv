@@ -13,7 +13,7 @@ TimerRoot:
     BoxLayout:
         Label:
             font_size: "140sp"
-            text: "15:00"
+            text: nap_minutes.text + ":00"
     AnchorLayout:
         TextInput:
             size_hint: None, None
@@ -36,9 +36,11 @@ TimerRoot:
 
 <Countdown>:
     orientation: "vertical"
+    nap_timer: nap_timer
     BoxLayout:
         Label:
-            text: "15:00"
+            id: nap_timer
+            text: "15"
             font_size: "150sp"
     AnchorLayout:
         anchor_x: "center"
