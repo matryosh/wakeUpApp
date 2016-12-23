@@ -10,6 +10,13 @@ TimerRoot:
     orientation: "vertical"
     nap_time: nap_minutes
 
+    canvas.before:
+        Color:
+            rgba: 0.5, 0.5, 0.5, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
     BoxLayout:
         Label:
             font_size: "140sp"
@@ -37,10 +44,16 @@ TimerRoot:
 <Countdown>:
     orientation: "vertical"
     nap_timer: nap_timer
+    canvas.before:
+        Color:
+            rgba: 0.5, 0.5, 0.5, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
     BoxLayout:
         Label:
             id: nap_timer
-            text: "15"
+            text: "15:00"
             font_size: "150sp"
     AnchorLayout:
         anchor_x: "center"
