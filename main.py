@@ -8,22 +8,11 @@ class SetTimer(BoxLayout):
 
     nap_time = NumericProperty
 
-
-class Countdown(BoxLayout):
-
-    nap_timer = NumericProperty
-
-    def startTime(self):
-        time = int(self.nap_timer.text[:2])*60
-        print(time)
+    def testButton(self):
+        print("Just seeing if the button works.")
 
 class TimerRoot(BoxLayout):
     startTimer = ObjectProperty()
-
-    def startTimer(self):
-        self.clear_widgets()
-        self.add_widget(Countdown())
-        Countdown().startTime()
 
     def setTimer(self):
         self.clear_widgets()
