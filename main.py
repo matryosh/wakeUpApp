@@ -8,6 +8,16 @@ class SetTimer(BoxLayout):
 
     nap_time = NumericProperty
 
+    def check_time(self):
+        if 12 <= self.nap_time.text <= 20:
+            return True
+        return False
+
+    def countdown(self):
+        time = int(self.nap_time.text)*60
+        for i in range(0,time+1):
+            print(i)
+
     def testButton(self):
         print("Just seeing if the button works.")
 
