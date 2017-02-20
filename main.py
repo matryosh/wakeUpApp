@@ -1,46 +1,65 @@
-import kivy
-kivy.require('1.9.1')
 from kivy.app import App
+from kivy.clock import Clock
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import NumericProperty, ObjectProperty
-from time import sleep
-class SetTimer(BoxLayout):
 
-    nap_time = NumericProperty
 
-    def check_time(self):
-        if 12 <= int(self.nap_time.text) <= 20:
-            #print(self.nap_time.text)
-            return True
+class Timer(BoxLayout):
+    nap_time = ObjectProperty
+    nap = StringProperty
+    nap_button = StringProperty
+    cd_seconds = 0
+    start = False
+
+    def countdown_time(self, nap):
+
+        if self.start:
+            self.cd_seconds -= nap
+
+        minutes, seconds = divmod(self.cd_seconds, 60)
+        self.ids.nap_label.text = (
+            '%02d:%02d' %
+            (int(minutes), int(seconds)))
+
+    def track_time(self):
+        # This functions initializes the time to seconds from minutes
+        cd_seconds = int(self.ids.nap_minutes.text) * 60
+        return cd_seconds
+
+    def reset(self):
+        self.cd_seconds = self.track_time()
+        minutes, seconds = divmod(self.cd_seconds, 60)
+        self.ids.nap_label.text = (
+            '%02d:%02d' %
+            (int(minutes), int(seconds)))
+
+    def clock(self, stop_start):
+        event = Clock.schedule_interval(self.countdown_time, 0)
+        if stop_start:
+            Clock.unschedule(self.countdown_time)
+            event()
         else:
-            print("Pick a number between 12 and 20.")
-            return False
+            self.reset()
 
-    def countdown(self):
-        time = int(self.nap_time.text)
-        if self.check_time():
-            i = time * 60
-            while i >= 0:
-                count_label = str(i/60)+":00" if i % 60 == 0 else str(i/60)+":"+str(i%60)
-                print count_label
-                i -= 1
+    def start_countdown(self):
 
+        # this checks to see if cd_seconds is zero. If so, it calls track time
 
-    def testButton(self):
-        print("Just seeing if the button works.")
+        if self.cd_seconds == 0:
+            self.cd_seconds = self.track_time()
 
-class TimerRoot(BoxLayout):
-    startTimer = ObjectProperty()
+        if self.start:
+            self.start = False
+        else:
+            self.start = True
 
-    def setTimer(self):
-        self.clear_widgets()
-        self.add_widget(SetTimer())
+        self.clock(self.start)
+
 
 class NapTimerApp(App):
     def build(self):
-        return TimerRoot()
+        return Timer()
 
-napApp = NapTimerApp()
 
 if __name__ == "__main__":
-    napApp.run()
+    NapTimerApp().run()

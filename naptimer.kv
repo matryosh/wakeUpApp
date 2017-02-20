@@ -1,15 +1,10 @@
-#:kivy 1.9.1
+Timer:
 
-TimerRoot:
-
-
-<TimerRoot>:
-    SetTimer
-
-<SetTimer>:
+<Timer>:
     orientation: "vertical"
     nap_time: nap_minutes
-
+    nap: nap_label
+    nap_button: nap_button
     canvas.before:
         Color:
             rgba: 0.5, 0.5, 0.5, 1
@@ -19,6 +14,7 @@ TimerRoot:
 
     BoxLayout:
         Label:
+            id: nap_label
             font_size: "140sp"
             text: nap_minutes.text + ":00"
     AnchorLayout:
@@ -27,16 +23,18 @@ TimerRoot:
             height: "30dp"
             id: nap_minutes
             padding: [40, 5, 0, 0]
-            text: "15"
+            text: "1"
             focus: True
             multiline: False
+            on_text: root.track_time()
     AnchorLayout:
         anchor_x: "center"
         anchor_y: "bottom"
         Button:
+            id: nap_button
             width: "400dp"
             size_hint: None, None
             text: "Time For A Nap"
             background_normal: ""
             background_color: [0.24, 0.62, 1, 1]
-            on_press: root.countdown()
+            on_press: root.start_countdown()
