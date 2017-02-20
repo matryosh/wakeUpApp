@@ -3,7 +3,6 @@ from kivy.clock import Clock
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 
-
 class Timer(BoxLayout):
     nap_time = ObjectProperty
     nap = StringProperty
@@ -12,6 +11,10 @@ class Timer(BoxLayout):
     start = False
 
     def countdown_time(self, nap):
+
+        if self.cd_seconds <= 0:
+            self.clock(False)
+            self.start = False
 
         if self.start:
             self.cd_seconds -= nap
@@ -35,17 +38,18 @@ class Timer(BoxLayout):
 
     def clock(self, stop_start):
         event = Clock.schedule_interval(self.countdown_time, 0)
-        if stop_start:
+        if stop_start or self.cd_seconds <= 0:
             Clock.unschedule(self.countdown_time)
             event()
         else:
+            Clock.unschedule(self.countdown_time)
             self.reset()
 
     def start_countdown(self):
 
         # this checks to see if cd_seconds is zero. If so, it calls track time
 
-        if self.cd_seconds == 0:
+        if self.cd_seconds <= 0:
             self.cd_seconds = self.track_time()
 
         if self.start:
