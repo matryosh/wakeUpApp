@@ -1,3 +1,8 @@
+<NapButton@Button>:
+    background_normal: ""
+    background_color: [0.62, 0.537, 0.514,1]
+
+
 Timer:
 
 <Timer>:
@@ -5,15 +10,11 @@ Timer:
     nap_time: nap_minutes
     nap: nap_label
     nap_button: nap_button
-    canvas.before:
-        Color:
-            rgba: 0.5, 0.5, 0.5, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
+    recommend: recommend
 
     BoxLayout:
         Label:
+            color: 0.62, 0.537, 0.514,1
             id: nap_label
             font_size: "140sp"
             text: nap_minutes.text + ":00"
@@ -23,18 +24,24 @@ Timer:
             height: "30dp"
             id: nap_minutes
             padding: [40, 5, 0, 0]
-            text: "1"
+            text: "12"
             focus: True
             multiline: False
             on_text: root.track_time()
-    AnchorLayout:
-        anchor_x: "center"
-        anchor_y: "bottom"
-        Button:
+    BoxLayout:
+
+        height: 90
+        orientation: 'horizontal'
+        padding: 20
+        spacing: 20
+        size_hint: (1, None)
+
+        NapButton:
             id: nap_button
-            width: "400dp"
-            size_hint: None, None
             text: "Time For A Nap"
-            background_normal: ""
-            background_color: [0.24, 0.62, 1, 1]
             on_press: root.start_countdown()
+
+        NapButton:
+            id: recommend
+            text: "Recommend Me A Nap"
+            on_press: root.recommend_time()
