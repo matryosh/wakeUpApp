@@ -4,26 +4,31 @@ from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.audio import SoundLoader
 from kivy.core.text import LabelBase
-
+from kivy.uix.popup import Popup
+from kivy.uix.togglebutton import ToggleButton
 
 class Timer(BoxLayout):
     nap_time = ObjectProperty
     nap = StringProperty
     nap_button = StringProperty
     recommend = StringProperty
+    audio_btn = ObjectProperty
     cd_seconds = 0
     start = False
+
     sound1 = SoundLoader.load('sounds/annoying_alarm.wav')
     sound1.volume = 1.0
-
+    
     def countdown_time(self, nap):
 
         if self.cd_seconds <= 1:
             if self.sound1:
                 self.sound1.play()
 
-            self.clock(False)
             self.start = False
+            self.recommend.x -= 2000
+            self.nap_button.x -= self.width * 0.25
+            self.clock(self.start)
 
         if self.start:
             self.cd_seconds -= nap
@@ -39,7 +44,26 @@ class Timer(BoxLayout):
         return cd_seconds
 
     def recommend_time(self):
+
         print("This is a placeholder for a recommendation button")
+        self.cd_seconds = 10 * 60
+
+        if self.start:
+            self.start = False
+            self.recommend.x -= 2000
+            self.nap_button.x -= self.width * 0.25
+        else:
+            self.start = True
+            self.recommend.x += 2000
+            self.nap_button.x += self.width * 0.25
+
+        self.clock(self.start)
+
+    def change_audio(self):
+        popup = Popup(title='Test popup',
+                      content=self.box,
+                      size_hint=(None, None), size=(400, 400))
+        popup.open()
 
     def reset(self):
         self.cd_seconds = self.track_time()
@@ -63,8 +87,13 @@ class Timer(BoxLayout):
 
         # this checks to see if cd_seconds is zero. If so, it calls track time
 
-        if self.cd_seconds <= 0:
-            self.cd_seconds = self.track_time()
+        try:
+
+            if self.cd_seconds <= 0:
+                self.cd_seconds = self.track_time()
+        except:
+            print("You fucking broke something!")
+            return
 
         if self.start:
             self.start = False
@@ -85,6 +114,20 @@ class NapTimerApp(App):
     def on_start(self):
         print("Oh fuck, it started up!")
 
+    def build_config(self, config):
+        config.setdefaults('Sound', {'Alarms': 'sounds/annoying_alarm.wav'})
+
+    def build_settings(self, settings):
+        settings.add_json_panel("Settings", self.config, data="""
+    [
+    {"type": "options",
+    "title": "Alarm",
+    "section": "Sound",
+    "key": "Alarms",
+    "options": ["sounds/annoying_alarm.wav", "sounds/sunday_church.wav"]
+    }
+    ]"""
+                                )
 
 if __name__ == "__main__":
     from kivy.core.window import Window
