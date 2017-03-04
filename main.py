@@ -5,7 +5,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.core.audio import SoundLoader
 from kivy.core.text import LabelBase
 from kivy.uix.popup import Popup
-from kivy.uix.togglebutton import ToggleButton
 
 class Timer(BoxLayout):
     nap_time = ObjectProperty
@@ -18,7 +17,7 @@ class Timer(BoxLayout):
 
     sound1 = SoundLoader.load('sounds/annoying_alarm.wav')
     sound1.volume = 1.0
-    
+
     def countdown_time(self, nap):
 
         if self.cd_seconds <= 1:
@@ -87,6 +86,13 @@ class Timer(BoxLayout):
 
         # this checks to see if cd_seconds is zero. If so, it calls track time
 
+        config = NapTimerApp.get_running_app().config
+        sound = config.getdefault("Sound", "Alarms", "Annoying Alarm")
+        if sound == "Annoying Alarm":
+            self.sound1 = SoundLoader.load('sounds/annoying_alarm.wav')
+        elif sound == "Sunday Mass":
+            self.sound1 = SoundLoader.load('sounds/sunday_church.wav')
+
         try:
 
             if self.cd_seconds <= 0:
@@ -106,16 +112,24 @@ class Timer(BoxLayout):
 
         self.clock(self.start)
 
+    def set_alarm(self):
+        config = NapTimerApp.get_running_app().config
+        sound = config.getdefault("Sound", "Alarms", "Annoying Alarm")
+        if sound == "Annoying Alarm":
+            self.sound1 = SoundLoader.load('sounds/annoying_alarm.wav')
+        elif sound == "Sunday Mass":
+            self.sound1 = SoundLoader.load('sounds/annoying_alarm.wav')
+
 
 class NapTimerApp(App):
-    def build(self):
-        return Timer()
+
+    #use_kivy_settings = False
 
     def on_start(self):
         print("Oh fuck, it started up!")
 
     def build_config(self, config):
-        config.setdefaults('Sound', {'Alarms': 'sounds/annoying_alarm.wav'})
+        config.setdefaults('Sound', {'Alarms': 'Annoying Alarm'})
 
     def build_settings(self, settings):
         settings.add_json_panel("Settings", self.config, data="""
@@ -124,7 +138,7 @@ class NapTimerApp(App):
     "title": "Alarm",
     "section": "Sound",
     "key": "Alarms",
-    "options": ["sounds/annoying_alarm.wav", "sounds/sunday_church.wav"]
+    "options": ["Annoying Alarm", "Sunday Mass", "Dulcet Tones"]
     }
     ]"""
                                 )
