@@ -1,6 +1,4 @@
 <NapButton@Button>:
-    background_normal: ""
-    background_color: [0.62, 0.537, 0.514,1]
     background_normal: "images/button_normal.png"
     background_down: "images/button_down.png"
     border: (2, 2, 2, 2)
@@ -14,15 +12,19 @@ Timer:
     nap_button: nap_button
     recommend: recommend
 
-    canvas.before:
-        Rectangle:
-            pos: self.pos
-            size: self.size
-            source: 'images/background.png'
-
     BoxLayout:
+        orientation: "vertical"
+        ActionBar:
+            ActionView:
+                use_separator: True
+                ActionPrevious:
+                    title: "Nap"
+                    with_previous: False
+                ActionGroup:
+                    ActionButton:
+                        text: "Settings"
+                        on_press: app.open_settings()
         Label:
-            color: 0.014, 0.028, 0.073,1
             id: nap_label
             font_size: "140sp"
             text: nap_minutes.text + ":00"
