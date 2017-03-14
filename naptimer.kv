@@ -10,7 +10,6 @@ Timer:
     nap_time: nap_minutes
     nap: nap_label
     nap_button: nap_button
-    recommend: recommend
 
     BoxLayout:
         orientation: "vertical"
@@ -21,6 +20,10 @@ Timer:
                     title: "Nap"
                     with_previous: False
                 ActionGroup:
+
+                    ActionButton:
+                        text: "Recommend"
+                        on_press: root.recommend_time()
                     ActionButton:
                         text: "Settings"
                         on_press: app.open_settings()
@@ -50,8 +53,3 @@ Timer:
             id: nap_button
             text: "Time For A Nap"
             on_press: root.start_countdown()
-
-        NapButton:
-            id: recommend
-            text: "Recommend Me A Nap"
-            on_press: root.recommend_time()

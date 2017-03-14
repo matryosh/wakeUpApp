@@ -16,15 +16,13 @@ class Timer(BoxLayout):
     sound1 = SoundLoader.load('sounds/annoying_alarm.wav')
     sound1.volume = 1.0
 
-    def move_buttons(self):
+    def start_var(self):
         self.start = True
-        self.recommend.x += 2000
-        self.nap_button.x += self.width * 0.25
+        #self.nap_button.x += self.width * 0.25
 
-    def move_buttons_back(self):
+    def stop_var(self):
         self.start = False
-        self.recommend.x -= 2000
-        self.nap_button.x -= self.width * 0.25
+        #self.nap_button.x -= self.width * 0.25
 
     def countdown_time(self, nap):
 
@@ -32,7 +30,7 @@ class Timer(BoxLayout):
             if self.sound1:
                 self.sound1.play()
 
-            self.move_buttons_back()
+            self.stop_var()
             self.clock(self.start)
 
         if self.start:
@@ -54,7 +52,7 @@ class Timer(BoxLayout):
         self.cd_seconds = 10 * 60
 
         if not self.start:
-            self.move_buttons()
+            self.start_var()
 
         self.clock(self.start)
 
@@ -89,9 +87,9 @@ class Timer(BoxLayout):
             return
 
         if self.start:
-            self.move_buttons_back()
+            self.stop_var()
         else:
-            self.move_buttons()
+            self.start_var()
 
         self.clock(self.start)
 
