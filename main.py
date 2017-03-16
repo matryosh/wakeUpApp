@@ -4,6 +4,7 @@ from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.audio import SoundLoader
 from kivy.core.text import LabelBase
+from kivy.storage.jsonstore import JsonStore
 
 class Timer(BoxLayout):
     nap_time = ObjectProperty
@@ -59,10 +60,10 @@ class Timer(BoxLayout):
     def reset(self):
         self.cd_seconds = self.track_time()
         minutes, seconds = divmod(self.cd_seconds, 60)
+        print(minutes, seconds)
         self.ids.nap_label.text = (
             '%02d:%02d' %
             (int(minutes), int(seconds)))
-        self.cd_seconds = 0
 
     def clock(self, stop_start):
         event = Clock.schedule_interval(self.countdown_time, 0)
@@ -72,7 +73,6 @@ class Timer(BoxLayout):
             self.nap_button.text = "I woke up early"
             event()
         else:
-
             Clock.unschedule(self.countdown_time)
             self.nap_button.text = "Time For A Nap"
             self.reset()
