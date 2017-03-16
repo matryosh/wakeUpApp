@@ -60,7 +60,6 @@ class Timer(BoxLayout):
     def reset(self):
         self.cd_seconds = self.track_time()
         minutes, seconds = divmod(self.cd_seconds, 60)
-        print(minutes, seconds)
         self.ids.nap_label.text = (
             '%02d:%02d' %
             (int(minutes), int(seconds)))
@@ -78,10 +77,10 @@ class Timer(BoxLayout):
             self.reset()
 
     def start_countdown(self):
+        self.cd_seconds = 0
 
         try:
-            if self.cd_seconds <= 0:
-                self.cd_seconds = self.track_time()
+            self.cd_seconds = self.track_time()
         except:
             print("You fucking broke something!")
             return
