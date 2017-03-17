@@ -5,6 +5,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.core.audio import SoundLoader
 from kivy.core.text import LabelBase
 from kivy.storage.jsonstore import JsonStore
+from kivy.uix.popup import Popup
+from kivy.uix.button import Button
 
 class Timer(BoxLayout):
     nap_time = ObjectProperty
@@ -16,6 +18,20 @@ class Timer(BoxLayout):
 
     sound1 = SoundLoader.load('sounds/annoying_alarm.wav')
     sound1.volume = 1.0
+
+    store = JsonStore('store.json')
+    if store.exists('amount'):
+        rec_number = store.get('amount')['times']
+        print rec_number
+    else:
+        store.put('amount', times=0)
+        rec_number = 0
+
+    def store_recommendation(self):
+        self.store.put(self.rec_number, time=self.cd_seconds / 60, rating=1)
+        self.rec_number += 1
+
+        self.store.put('amount', times=self.rec_number)
 
     def start_var(self):
         self.start = True
@@ -49,6 +65,7 @@ class Timer(BoxLayout):
 
     def recommend_time(self):
 
+
         print("This is a placeholder for a recommendation button")
         self.cd_seconds = 10 * 60
 
@@ -59,10 +76,14 @@ class Timer(BoxLayout):
 
     def reset(self):
         self.cd_seconds = self.track_time()
+        self.store_recommendation()
         minutes, seconds = divmod(self.cd_seconds, 60)
         self.ids.nap_label.text = (
             '%02d:%02d' %
             (int(minutes), int(seconds)))
+        print self.store
+
+
 
     def clock(self, stop_start):
         event = Clock.schedule_interval(self.countdown_time, 0)
