@@ -20,18 +20,60 @@ class Timer(BoxLayout):
     sound1.volume = 1.0
 
     store = JsonStore('store.json')
-    if store.exists('amount'):
-        rec_number = store.get('amount')['times']
+    num_of_rec = JsonStore('amount_storage.json')
+
+    if num_of_rec.exists('amount'):
+        rec_number = num_of_rec.get('amount')['times']
         print rec_number
     else:
-        store.put('amount', times=0)
+        num_of_rec.put('amount', times=0)
         rec_number = 0
 
-    def store_recommendation(self):
-        self.store.put(self.rec_number, time=self.cd_seconds / 60, rating=1)
+    def store_recommendation(self, rating):
+
+        self.store.put(self.rec_number, time=self.cd_seconds / 60, rating=rating)
         self.rec_number += 1
 
-        self.store.put('amount', times=self.rec_number)
+        self.num_of_rec.put('amount', times=self.rec_number)
+
+
+    def rating_popup(self):
+        layout = BoxLayout(orientation='vertical', padding=20,
+        spacing=20)
+        btn1 = Button(text='bad')
+        btn2 = Button(text='good')
+        btn3 = Button(text='great')
+        layout.add_widget(btn1)
+        layout.add_widget(btn2)
+        layout.add_widget(btn3)
+
+        popup = Popup(title='How did you sleep?', content=layout, size_hint=(None, None), size=(400, 400))
+
+        def bad_rating():
+            self.store_recommendation(0)
+            popup.dismiss()
+
+        def good_rating():
+            self.store_recommendation(1)
+            popup.dismiss()
+
+        def great_rating():
+            self.store_recommendation(2)
+            popup.dismiss()
+
+        btn1.bind(on_press=lambda x: bad_rating())
+        btn2.bind(on_press=lambda x: good_rating())
+        btn3.bind(on_press=lambda x: great_rating())
+
+        popup.open()
+
+    def create_recommendation(self):
+        listz = [(self.store.get(i[1])['time'],
+                  self.store.get(i[1])['rating'])
+                 for i in enumerate(self.store.keys())]
+
+        print(listz)
+
 
     def start_var(self):
         self.start = True
@@ -65,7 +107,6 @@ class Timer(BoxLayout):
 
     def recommend_time(self):
 
-
         print("This is a placeholder for a recommendation button")
         self.cd_seconds = 10 * 60
 
@@ -76,12 +117,12 @@ class Timer(BoxLayout):
 
     def reset(self):
         self.cd_seconds = self.track_time()
-        self.store_recommendation()
+        #self.store_recommendation()
+        self.rating_popup()
         minutes, seconds = divmod(self.cd_seconds, 60)
         self.ids.nap_label.text = (
             '%02d:%02d' %
             (int(minutes), int(seconds)))
-        print self.store
 
 
 
