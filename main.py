@@ -70,7 +70,7 @@ class Timer(BoxLayout):
     def create_recommendation(self):
         listz = [(self.store.get(i[1])['time'],
                   self.store.get(i[1])['rating'])
-                 for i in enumerate(self.store.keys())]
+                 for i in enumerate(self.store.keys()) if self.store.get(i[1])['rating'] > 1]
 
         print(listz)
 
@@ -168,7 +168,8 @@ class Timer(BoxLayout):
 
 class NapTimerApp(App):
 
-    use_kivy_settings = False
+    #use_kivy_settings = False
+
     def on_start(self):
         print("Oh fuck, it started up!")
 
