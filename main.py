@@ -7,6 +7,8 @@ from kivy.core.text import LabelBase
 from kivy.storage.jsonstore import JsonStore
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
+import collections as clt
+
 
 class Timer(BoxLayout):
     nap_time = ObjectProperty
@@ -68,11 +70,13 @@ class Timer(BoxLayout):
         popup.open()
 
     def create_recommendation(self):
-        listz = [(self.store.get(i[1])['time'],
-                  self.store.get(i[1])['rating'])
+        listz = [self.store.get(i[1])['time']
                  for i in enumerate(self.store.keys()) if self.store.get(i[1])['rating'] > 1]
 
-        print(listz)
+        rec_num = clt.Counter(listz)
+
+        return rec_num.most_common()[0][0]
+
 
 
     def start_var(self):
@@ -106,18 +110,13 @@ class Timer(BoxLayout):
         return cd_seconds
 
     def recommend_time(self):
+        rec_num = self.create_recommendation()
+        self.ids.nap_minutes.text = str(rec_num)
 
-        print("This is a placeholder for a recommendation button")
-        self.cd_seconds = 10 * 60
-
-        if not self.start:
-            self.start_var()
-
-        self.clock(self.start)
+        #self.clock(self.start)
 
     def reset(self):
         self.cd_seconds = self.track_time()
-        #self.store_recommendation()
         self.rating_popup()
         minutes, seconds = divmod(self.cd_seconds, 60)
         self.ids.nap_label.text = (
