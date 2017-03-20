@@ -22,7 +22,7 @@ class Timer(BoxLayout):
     sound1.volume = 1.0
 
     store = JsonStore('store.json')
-    num_of_rec = JsonStore('amount_storage.json')
+    num_of_rec = JsonStore('amount_storage.json') #used for adding keys into the store variable e.g. {0: time}, {1:time}
 
     if num_of_rec.exists('amount'):
         rec_number = num_of_rec.get('amount')['times']
@@ -40,6 +40,7 @@ class Timer(BoxLayout):
 
 
     def rating_popup(self):
+        """rating popup asks user how their nap was using a popup"""
         layout = BoxLayout(orientation='vertical', padding=20,
         spacing=20)
         btn1 = Button(text='bad')
@@ -80,12 +81,12 @@ class Timer(BoxLayout):
 
 
     def start_var(self):
+        """used to change the global start variable"""
         self.start = True
-        #self.nap_button.x += self.width * 0.25
 
     def stop_var(self):
+        """used to change the global start variable"""
         self.start = False
-        #self.nap_button.x -= self.width * 0.25
 
     def countdown_time(self, nap):
 
@@ -94,6 +95,7 @@ class Timer(BoxLayout):
                 self.sound1.play()
 
             self.stop_var()
+            self.rating_popup()
             self.clock(self.start)
 
         if self.start:
@@ -105,19 +107,18 @@ class Timer(BoxLayout):
             (int(minutes), int(seconds)))
 
     def track_time(self):
-        # This functions initializes the time to seconds from minutes
+        """This functions initializes the time to seconds from minutes"""
         cd_seconds = int(self.ids.nap_minutes.text) * 60
         return cd_seconds
 
     def recommend_time(self):
+        """this function displays the created recommendation to the screen"""
         rec_num = self.create_recommendation()
         self.ids.nap_minutes.text = str(rec_num)
 
-        #self.clock(self.start)
-
     def reset(self):
+        """resets the look of the screen back"""
         self.cd_seconds = self.track_time()
-        self.rating_popup()
         minutes, seconds = divmod(self.cd_seconds, 60)
         self.ids.nap_label.text = (
             '%02d:%02d' %
@@ -126,6 +127,7 @@ class Timer(BoxLayout):
 
 
     def clock(self, stop_start):
+        """this resets kivy's clock function and changes the nap button"""
         event = Clock.schedule_interval(self.countdown_time, 0)
         if stop_start or self.cd_seconds <= 0:
             self.set_alarm()
@@ -138,7 +140,8 @@ class Timer(BoxLayout):
             self.reset()
 
     def start_countdown(self):
-        self.cd_seconds = 0
+        "this function starts the other functions"
+        self.cd_seconds = 0 #makes the app countdown from the user sets on the first try
 
         try:
             self.cd_seconds = self.track_time()
@@ -167,7 +170,7 @@ class Timer(BoxLayout):
 
 class NapTimerApp(App):
 
-    #use_kivy_settings = False
+    use_kivy_settings = False
 
     def on_start(self):
         print("Oh fuck, it started up!")
